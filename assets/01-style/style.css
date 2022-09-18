@@ -1,0 +1,53 @@
+:root {
+    --dev-border-style: solid black;
+
+    --footer-height: 9rem;
+}
+
+html, body  {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+
+}
+
+header {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    margin: 10px 25px;
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* Developer Styles */
+body {
+    border: var(--dev-border-style);
+}
+
+header {
+    border: var(--dev-border-style);
+}
+
+main {
+    border: var(--dev-border-style);
+}
+
+footer {
+    border: var(--dev-border-style);
+    margin: 0px;
+    height: var(--footer-height);
+}
