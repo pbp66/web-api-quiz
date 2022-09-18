@@ -61,7 +61,13 @@ article {
     margin: 5px;
 }
 
+section {
+    visibility: visible; /* TODO: Final Version - Change to hidden */
+}
+
 #quiz-start {
+    visibility: visible;
+    
     display: flex;
     flex-flow: column;
     justify-content: center;
