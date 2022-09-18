@@ -20,6 +20,11 @@ header {
     flex-flow: row;
     justify-content: space-between;
     margin: 10px 25px;
+    /* TODO: Specify Width. The pseudo-elements will grow with the page instead */
+}
+
+header::before, header::after {
+    flex-grow: 1;
 }
 
 main {
