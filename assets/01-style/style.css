@@ -50,9 +50,11 @@ header::before, header::after {
 
 
 main {
+    display: block;
     flex: 1;
     padding: 5px;
     margin: var(--default-vertical-margin) var(--default-horizontal-margin);
+    margin-bottom: 20px;
 }
 
 article {
