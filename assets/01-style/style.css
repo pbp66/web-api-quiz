@@ -15,17 +15,34 @@ body {
 
 }
 
+h1 {
+    font-size: 2em;
+    font-weight: 700;
+}
+
+h2 {
+    font-size: 1.2em;
+}
+
+h3 {
+    font-size: 1.17em;
+}
+
+
 header {
     display: flex;
     flex-flow: row;
     justify-content: space-between;
+    align-items: center;
     margin: 10px 25px;
+    padding: 5px;
     /* TODO: Specify Width. The pseudo-elements will grow with the page instead */
 }
 
 header::before, header::after {
     flex-grow: 1;
 }
+
 
 main {
     flex: 1;
@@ -35,6 +52,21 @@ article {
     margin: 5px;
 }
 
+#quiz-start {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#quiz-start h2, #quiz-start input {
+    margin-top: 10px;
+    padding: 5px;
+}
+
+#quiz-start input {
+    margin-bottom: 15px;
+}
 section {
     margin: 5px;
 }
