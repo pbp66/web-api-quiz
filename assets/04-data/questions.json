@@ -28,12 +28,12 @@
         },
     "Question 4" : 
         {
-            "title": "Which of the following are not valid data types in JavaScript?",
-            "option_1": "",
-            "option_2": "",
-            "option_3": "",
-            "option_4": "",
-            "answer": ""
+            "title": "Which of the following are not valid loop types in JavaScript?",
+            "option_1": "While Loop",
+            "option_2": "For Loop",
+            "option_3": "Do While Loop",
+            "option_4": "Do For Loop",
+            "answer": "Do For Loop"
         },
     "Question 5" : 
         {
