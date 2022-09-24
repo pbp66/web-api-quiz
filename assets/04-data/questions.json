@@ -46,12 +46,12 @@
         },
     "Question 6" : 
         {
-            "title": "Which of the following are not valid data types in JavaScript?",
-            "option_1": "",
-            "option_2": "",
-            "option_3": "",
-            "option_4": "",
-            "answer": ""
+            "title": "What is the root html tag in the DOM tree?",
+            "option_1": "head",
+            "option_2": "html",
+            "option_3": "!DOCTYPE html",
+            "option_4": "script",
+            "answer": "html"
         },
     "Question 7" : 
         {
