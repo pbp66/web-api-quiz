@@ -70,7 +70,16 @@ function loadScores() {
 }
 
 function displayQuestion(question) {
+    var quizSection = document.getElementById("question");
+    var title = quizSection.getElementsByTagName("h2")[0];
+    var options = quizSection.getElementsByClassName("answer");
+    var listItem;
 
+    title.textContent = question.title;
+    for (var i = 0; i < options.length; i++) {
+        listItem = options[i].querySelector("button");
+        listItem.innerHTML = question["option_" + (i + 1) + ""];
+    }
 }
 
 function updateTimer() {
@@ -93,4 +102,11 @@ var test = document.querySelector("#answer-1");
 test.addEventListener("click", loadQuestions);
 
 var test2 = document.querySelector("#answer-4");
-test2.addEventListener("click", () => console.log(questionList));
+test2.addEventListener("click", () => displayQuestion(        {
+    "title": "Which of the following is not a valid data type in JavaScript?",
+    "option_1": "Number",
+    "option_2": "String",
+    "option_3": "Boolean",
+    "option_4": "Void",
+    "answer": "Void"
+}));
