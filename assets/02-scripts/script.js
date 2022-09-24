@@ -21,8 +21,7 @@ class Question {
 
 var questionList = [];
 
-async function loadQuestions(event) {
-    event.stopPropagation();
+async function loadQuestions() {
     var questionData = await fetch("./assets/04-data/questions.json").then(response => response.json());
     var questions = Object.keys(questionData);
     for (var i = 0; i < questions.length; i++ ) {
@@ -49,6 +48,14 @@ function randomInt(range) {
     return Math.floor(Math.random() * range);
 }
 
+function playQuiz() {
+    loadQuestions();
+}
+
+
+/* Start the Quiz */
+var startQuiz = document.getElementById("btn-quiz-start");
+startQuiz.addEventListener("click", playQuiz);
 
 /* DEV TEST SECTION */
 var test = document.querySelector("#answer-1");
