@@ -19,12 +19,12 @@
         },
     "Question 3" : 
         {
-            "title": "Which of the following are not valid data types in JavaScript?",
-            "option_1": "",
-            "option_2": "",
-            "option_3": "",
-            "option_4": "",
-            "answer": ""
+            "title": "What is the difference between null and undefined?",
+            "option_1": "null represents a value of 0 and and undefined represents a value that is not assigned",
+            "option_2": "null represents the idea of nothing/empty and undefined represents a value that is not assigned",
+            "option_3": "null represents the idea of nothing/empty and undefined represents a variable with no type",
+            "option_4": "null represents a value of 0 and undefined represents a value that is not assigned",
+            "answer": "null represents the idea of nothing/empty and undefined represents a value that is not assigned"
         },
     "Question 4" : 
         {
