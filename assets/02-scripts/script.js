@@ -49,6 +49,12 @@ function randomInt(range) {
 }
 
 /* ROAD MAP */
+// Load settings, questions, scores
+// Click Play
+// Display question, start timer
+// User answers question. update timer if wrong, continue countdown otherwise
+// Update questions answered statistic
+
 function initQuiz() {
     loadSettings();
     loadScores();
@@ -60,12 +66,21 @@ function loadSettings() {
 }
 
 function loadScores() {
-    
+
+}
+
+function displayQuestion(question) {
+
+}
+
+function updateTimer() {
+
 }
 
 /* Main function to control flow of the game*/
 function playQuiz() {
-
+    // Have a countdown?
+    // Start Timer
 }
 
 
