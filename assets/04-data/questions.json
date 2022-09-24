@@ -55,12 +55,12 @@
         },
     "Question 7" : 
         {
-            "title": "Which of the following are not valid data types in JavaScript?",
-            "option_1": "",
-            "option_2": "",
-            "option_3": "",
-            "option_4": "",
-            "answer": ""
+            "title": "Which method can you use to search the DOM tree?",
+            "option_1": "querySelector",
+            "option_2": "getAttributeById",
+            "option_3": "getID",
+            "option_4": "getName",
+            "answer": "querySelector"
         },
     "Question 8" : 
         {
