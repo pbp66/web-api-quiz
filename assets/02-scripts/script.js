@@ -10,8 +10,21 @@ class Question {
     }
 }
 
-function loadQuestions() {
-    var response = fetch("./assets./04-data./questions.json");
-    var questions = response.json();
-    console.log(questions);
+var questionList = [];
+
+async function loadQuestions() {
+    var response = await fetch("./assets/04-data/questions.json").then(response => response.json());
+    var questions = Object.keys(response);
+    for (var i = 0; i < questions.length; i++ ) {
+        var temp = new Question();
+        temp = response[questions[i]];
+        questionList.push(temp);
+    }
 };
+
+// console.log(response[questions[i]]);
+// console.log(questionList[i].title);
+
+var test = document.querySelector("#answer-1");
+
+test.addEventListener("click", loadQuestions);
