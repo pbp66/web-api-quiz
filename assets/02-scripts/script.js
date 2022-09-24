@@ -19,6 +19,27 @@ class Question {
     }
 };
 
+class Timer {
+    constructor(time = 60, interval = 1){
+        this.start = time;
+        this.timeLeft = time;
+        this.countInterval = interval;
+        this.timer;
+    }
+    
+    startTimer() {
+        this.timer = setInterval(this.updateTimer(-this.interval), this.interval * 1000);
+    }
+    
+    updateTimer(changeTime = 0) {
+        this.timeLeft += changeTime;
+    }
+
+    stopTimer() {
+        clearInterval(this.timer);
+    }
+};
+
 var questionList = [];
 
 async function loadQuestions() {
@@ -82,9 +103,7 @@ function displayQuestion(question) {
     }
 }
 
-function updateTimer() {
 
-}
 
 /* Main function to control flow of the game*/
 function playQuiz() {
