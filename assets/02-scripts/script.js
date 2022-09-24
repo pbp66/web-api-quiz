@@ -34,9 +34,6 @@ async function loadQuestions(event) {
     randomizeList(questionList);
 };
 
-// console.log(response[questions[i]]);
-// console.log(questionList[i].title);
-
 function randomizeList(list) {
     var temp;
     for (var i = 0; i < list.length; i++) {
