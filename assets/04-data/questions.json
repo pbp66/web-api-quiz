@@ -37,12 +37,12 @@
         },
     "Question 5" : 
         {
-            "title": "Which of the following are not valid data types in JavaScript?",
-            "option_1": "",
-            "option_2": "",
-            "option_3": "",
-            "option_4": "",
-            "answer": ""
+            "title": "Arrays are enclosed with which symbols?",
+            "option_1": "Bananas",
+            "option_2": "Parenthesis, ()",
+            "option_3": "Straight Braces, []",
+            "option_4": "Curly Braces, {}",
+            "answer": "[]"
         },
     "Question 6" : 
         {
