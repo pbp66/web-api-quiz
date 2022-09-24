@@ -8,6 +8,15 @@ class Question {
         this.option_4 = option_4;
         this.answer = answer;
     }
+
+    randomizeOptions () {
+        var options = [this.option_1, this.option_2, this.option_3, this.option_4];
+        randomizeList(options);
+        this.option_1 = options[0];
+        this.option_2 = options[1];
+        this.option_3 = options[2];
+        this.option_4 = options[3];
+    }
 };
 
 var questionList = [];
@@ -18,10 +27,11 @@ async function loadQuestions(event) {
     var questions = Object.keys(questionData);
     for (var i = 0; i < questions.length; i++ ) {
         var temp = new Question();
-        temp = questionData[questions[i]];
+        temp = Object.assign(temp, questionData[questions[i]]);
+        temp.randomizeOptions();
         questionList.push(temp);
     }
-    console.log(questionList);
+    randomizeList(questionList);
 };
 
 // console.log(response[questions[i]]);
@@ -36,7 +46,6 @@ function randomizeList(list) {
         list[random1] = list[random2];
         list[random2] = temp;
     }
-    console.log(questionList);
 }
 
 function randomInt(range) {
@@ -49,4 +58,4 @@ var test = document.querySelector("#answer-1");
 test.addEventListener("click", loadQuestions);
 
 var test2 = document.querySelector("#answer-4");
-test2.addEventListener("click", () => randomizeList(questionList));
+test2.addEventListener("click", () => console.log(questionList));
