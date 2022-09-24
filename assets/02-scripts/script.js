@@ -9,6 +9,8 @@ function Question(title = "", option_1 = "", option_2 = "", option_3 = "", optio
     this.answer = answer;
 };
 
-function loadQuestions(filename) {
-    fetch("./assets./04-data./questions.json")
+function loadQuestions() {
+    var response = fetch("./assets./04-data./questions.json");
+    var questions = response.json();
+    console.log(questions);
 };
