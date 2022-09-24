@@ -1,12 +1,12 @@
 {
     "Question 1": 
         {
-            "title": "Which of the following are not valid data types in JavaScript?",
-            "option_1": "",
-            "option_2": "",
-            "option_3": "",
-            "option_4": "",
-            "answer": ""
+            "title": "Which of the following is not a valid data type in JavaScript?",
+            "option_1": "Number",
+            "option_2": "String",
+            "option_3": "Boolean",
+            "option_4": "Void",
+            "answer": "Void"
         },
     "Question 2" : 
         {
