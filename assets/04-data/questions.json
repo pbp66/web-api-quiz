@@ -10,12 +10,12 @@
         },
     "Question 2" : 
         {
-            "title": "Which of the following are not valid data types in JavaScript?",
-            "option_1": "",
-            "option_2": "",
-            "option_3": "",
-            "option_4": "",
-            "answer": ""
+            "title": "Which operator is used as a strict equality checking for the same value and type?",
+            "option_1": "===",
+            "option_2": "!==",
+            "option_3": "+++",
+            "option_4": "==",
+            "answer": "==="
         },
     "Question 3" : 
         {
