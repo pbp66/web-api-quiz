@@ -21,21 +21,21 @@ class Question {
 
 class Timer {
     constructor(time = 60, interval = 1){
-        this.start = time;
+        this.initialTime = time;
         this.timeLeft = time;
         this.countInterval = interval;
         this.timer;
     }
     
-    startTimer() {
-        this.timer = setInterval(this.updateTimer(-this.interval), this.interval * 1000);
+    start() {
+        this.timer = setInterval(this.update(-this.interval), this.interval * 1000);
     }
     
-    updateTimer(changeTime = 0) {
+    update(changeTime = 0) {
         this.timeLeft += changeTime;
     }
 
-    stopTimer() {
+    stop() {
         clearInterval(this.timer);
     }
 };
@@ -109,6 +109,14 @@ function displayQuestion(question) {
 function playQuiz() {
     // Have a countdown?
     // Start Timer
+    var timer = new Timer(60, 1);
+
+    /* Play Loop */
+    timer.start();
+    while (timer.timeLeft >= 0) {
+
+    }
+    timer.stop();
 }
 
 
