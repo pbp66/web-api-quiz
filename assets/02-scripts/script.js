@@ -48,8 +48,24 @@ function randomInt(range) {
     return Math.floor(Math.random() * range);
 }
 
-function playQuiz() {
+/* ROAD MAP */
+function initQuiz() {
+    loadSettings();
+    loadScores();
     loadQuestions();
+}
+
+function loadSettings() {
+
+}
+
+function loadScores() {
+    
+}
+
+/* Main function to control flow of the game*/
+function playQuiz() {
+
 }
 
 
