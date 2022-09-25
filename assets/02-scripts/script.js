@@ -114,15 +114,14 @@ function randomInt(range) {
 }
 
 /* ROAD MAP */
-// Load settings, questions, scores
 // Click Play
 // User answers question. update timer if wrong, continue countdown otherwise
 // Update questions answered statistic
 
-function initQuiz() {
-    loadSettings();
-    loadScores();
-    loadQuestions();
+async function initQuiz() {
+    await loadSettings();
+    await loadScores();
+    await loadQuestions();
 }
 
 function displayQuestion(question) {
@@ -139,8 +138,8 @@ function displayQuestion(question) {
 }
 
 /* Main function to control flow of the game*/
-function playQuiz() {
-    initQuiz();
+async function playQuiz() {
+    var response = await initQuiz();
     // Have a countdown?
 
     console.log("It's Quiz Time!");
