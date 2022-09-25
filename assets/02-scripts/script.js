@@ -23,16 +23,27 @@ class Timer {
     constructor(time = 60, interval = 1){
         this.initialTime = time;
         this.timeLeft = time;
-        this.countInterval = interval;
+        this.interval = interval;
         this.timer;
+        this.element;
     }
     
+    setElement(element) {
+        this.element = element;
+    }
+
+    getElement() {
+        return this.element;
+    }
+
     start() {
-        this.timer = setInterval(this.update(-this.interval), this.interval * 1000);
+        var timerObj = this;
+        this.timer = setInterval(() => timerObj.update(-1), timerObj.interval * 1000);
     }
     
-    update(changeTime = 0) {
+    update(changeTime = -1) {
         this.timeLeft += changeTime;
+        this.element.innerHTML = this.timeLeft;
     }
 
     stop() {
@@ -72,7 +83,6 @@ function randomInt(range) {
 /* ROAD MAP */
 // Load settings, questions, scores
 // Click Play
-// Display question, start timer
 // User answers question. update timer if wrong, continue countdown otherwise
 // Update questions answered statistic
 
@@ -103,22 +113,21 @@ function displayQuestion(question) {
     }
 }
 
-
-
 /* Main function to control flow of the game*/
 function playQuiz() {
     // Have a countdown?
     // Start Timer
+    console.log("It's Quiz Time!");
     var timer = new Timer(60, 1);
+    timer.setElement(document.querySelector("#timer"));
 
     /* Play Loop */
     timer.start();
-    while (timer.timeLeft >= 0) {
-
-    }
+    // while (timer.timeLeft >= 0) {
+    //     console.log(timer.timeLeft);
+    // }
     timer.stop();
 }
-
 
 /* Start the Quiz */
 var startQuiz = document.getElementById("btn-quiz-start");
