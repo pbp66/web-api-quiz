@@ -25,7 +25,6 @@ class Timer {
         this.timeLeft = time;
         this.interval = interval;
         this.timer;
-        this.element;
     }
     
     setElement(element) {
@@ -70,6 +69,8 @@ class Score {
 var questionList = [];
 var settings = new Settings();
 var scoresList = [];
+var timer = new Timer();
+var quizButtons = document.getElementsByClassName("answer");
 
 async function loadQuestions() {
     var questionData = await fetch("./assets/04-data/questions.json").then(response => response.json());
@@ -113,15 +114,21 @@ function randomInt(range) {
     return Math.floor(Math.random() * range);
 }
 
-/* ROAD MAP */
-// Click Play
-// User answers question. update timer if wrong, continue countdown otherwise
-// Update questions answered statistic
-
 async function initQuiz() {
+   
     await loadSettings();
     await loadScores();
     await loadQuestions();
+    
+    timer.initialTime = settings.quizTime;
+    timer.timeLeft = settings.quizTime;
+    timer.interval = settings.timePenalty;
+
+    // Terrible practice as this has no modularity if the HTML changes, but it'll do for now.
+    timer.setElement(document.querySelector("#timer"));
+    timer.getElement().innerHTML = timer.timeLeft;
+
+    generateEventListeners();
 }
 
 function displayQuestion(question) {
@@ -137,38 +144,48 @@ function displayQuestion(question) {
     }
 }
 
-/* Main function to control flow of the game*/
-async function playQuiz() {
-    var response = await initQuiz();
+function playQuiz() {
     // Have a countdown?
-
-    console.log("It's Quiz Time!");
-
-    var timer = new Timer(60, 1);
-    timer.setElement(document.querySelector("#timer"));
     displayQuestion(questionList[0]);
-
     timer.start();
-    // while (timer.timeLeft >= 0) {
-    //     console.log(timer.timeLeft);
-    // }
-    timer.stop();
 }
 
-/* Start the Quiz */
+function generateEventListeners() {
+    for (var i = 0; i < quizButtons.length; i++) {
+        quizButtons[i].addEventListener("click", submitAnswer);
+    }
+}
+
+function submitAnswer(event) {
+    
+}
+
+
+
+
+/* ROAD MAP */
+// User answers question. update timer if wrong, continue countdown otherwise
+// Update questions answered statistic
+
+initQuiz();
+
 var startQuiz = document.getElementById("btn-quiz-start");
 startQuiz.addEventListener("click", playQuiz);
+
+
+
+
+
+
+
+
+
+
 
 /* DEV TEST SECTION */
 var test = document.querySelector("#answer-1");
 test.addEventListener("click", loadScores);
 
-var test2 = document.querySelector("#answer-4");
-test2.addEventListener("click", () => displayQuestion(        {
-    "title": "Which of the following is not a valid data type in JavaScript?",
-    "option_1": "Number",
-    "option_2": "String",
-    "option_3": "Boolean",
-    "option_4": "Void",
-    "answer": "Void"
-}));
+var test3 = function() {
+    console.log("Hello, World!");
+}
