@@ -1,4 +1,4 @@
-/* Question Class Declaration */
+/* Class Declarations */
 class Question {
     constructor(title = "", option_1 = "", option_2 = "", option_3 = "", option_4 = "", answer = "") {
         this.title = title;
@@ -66,12 +66,15 @@ class Score {
     }
 }
 
+/* Variable Declarations */
 var questionList = [];
 var settings = new Settings();
 var scoresList = [];
 var timer = new Timer();
 var quizButtons = document.getElementsByClassName("answer");
 
+
+/* Function declarations */
 async function loadQuestions() {
     var questionData = await fetch("./assets/04-data/questions.json").then(response => response.json());
     var questions = Object.keys(questionData);
@@ -160,12 +163,15 @@ function submitAnswer(event) {
     
 }
 
-
-
-
 /* ROAD MAP */
-// User answers question. update timer if wrong, continue countdown otherwise
-// Update questions answered statistic
+// User answers question
+// Update timer if wrong, continue countdown otherwise
+// Move to next question
+// Display correct or incorrect below options on next question
+// When number of questions is finished or time runs out, display score
+
+// Update loading methods to save to local storage (settings and scores)
+// Implement methods to save settings and scores. 
 
 initQuiz();
 
