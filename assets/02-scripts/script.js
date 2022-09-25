@@ -51,7 +51,25 @@ class Timer {
     }
 };
 
+class Settings {
+    constructor(time = 60, penalty = 1, questionCount = 5) {
+        this.quizTime = time;
+        this.timePenalty = penalty;
+        this.numQuestions = questionCount;
+    }
+};
+
+class Score {
+    constructor(initials = "", score = "", entry = "") {
+        this.initials = initials;
+        this.score = score;
+        this.entry = entry;
+    }
+}
+
 var questionList = [];
+var settings = new Settings();
+var scoresList = [];
 
 async function loadQuestions() {
     var questionData = await fetch("./assets/04-data/questions.json").then(response => response.json());
@@ -64,6 +82,21 @@ async function loadQuestions() {
     }
     randomizeList(questionList);
 };
+
+async function loadSettings() {
+    var settingsData = await fetch("./assets/04-data/settings.json").then(response => response.json());
+    Object.assign(settings, settingsData);
+}
+
+async function loadScores() {
+    var scoresData = await fetch("./assets/04-data/scores.json").then(response => response.json());
+    var scores= Object.keys(scoresData);
+    for (var i = 0; i < scores.length; i++ ) {
+        var temp = new Score();
+        temp = Object.assign(temp, scoresData[scores[i]]);
+        scoresList.push(temp);
+    }
+}
 
 function randomizeList(list) {
     var temp;
@@ -92,14 +125,6 @@ function initQuiz() {
     loadQuestions();
 }
 
-function loadSettings() {
-
-}
-
-function loadScores() {
-
-}
-
 function displayQuestion(question) {
     var quizSection = document.getElementById("question");
     var title = quizSection.getElementsByTagName("h2")[0];
@@ -115,13 +140,15 @@ function displayQuestion(question) {
 
 /* Main function to control flow of the game*/
 function playQuiz() {
+    initQuiz();
     // Have a countdown?
-    // Start Timer
+
     console.log("It's Quiz Time!");
+
     var timer = new Timer(60, 1);
     timer.setElement(document.querySelector("#timer"));
+    displayQuestion(questionList[0]);
 
-    /* Play Loop */
     timer.start();
     // while (timer.timeLeft >= 0) {
     //     console.log(timer.timeLeft);
@@ -135,7 +162,7 @@ startQuiz.addEventListener("click", playQuiz);
 
 /* DEV TEST SECTION */
 var test = document.querySelector("#answer-1");
-test.addEventListener("click", loadQuestions);
+test.addEventListener("click", loadScores);
 
 var test2 = document.querySelector("#answer-4");
 test2.addEventListener("click", () => displayQuestion(        {
