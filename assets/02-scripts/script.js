@@ -1,26 +1,40 @@
 /* Class Declarations */
 class Question {
-    constructor(title = "", option_1 = "", option_2 = "", option_3 = "", option_4 = "", answer = "") {
+    constructor(title = "", option1 = "", option2 = "", option3 = "", option4 = "", answer = "") {
         this.title = title;
-        this.option_1 = option_1;
-        this.option_2 = option_2;
-        this.option_3 = option_3;
-        this.option_4 = option_4;
+        this.option1 = option1;
+        this.option2 = option2;
+        this.option3 = option3;
+        this.option4 = option4;
         this.answer = answer;
+        this.html;
     }
 
     randomizeOptions () {
-        var options = [this.option_1, this.option_2, this.option_3, this.option_4];
+        var options = [this.option1, this.option2, this.option3, this.option4];
         randomizeList(options);
-        this.option_1 = options[0];
-        this.option_2 = options[1];
-        this.option_3 = options[2];
-        this.option_4 = options[3];
+        this.option1 = options[0];
+        this.option2 = options[1];
+        this.option3 = options[2];
+        this.option4 = options[3];
     }
 
-    generateQuestionHTML(quizElement) {
-        quizElement.innerHTML = "";
-        quizElement.appendChild(document.createElement('section'))
+    createHTML() {
+        var parent = document.createElement("ul");
+        var properties = Object.keys(this);
+
+        for (var i = 0; i < 4; i++) { // TODO: Determine number of options for flexible use cases
+            var listElement = document.createElement("li");
+            listElement.className = "answer";
+            listElement.id = properties[i + 1];
+            
+            var button = document.createElement("button")
+            button.innerHTML = this[i + 1];
+
+            listElement.appendChild(button);
+            parent.appendChild(listElement);
+        }
+        this.html = parent;
     }
 };
 
@@ -168,7 +182,7 @@ function displayNextQuestion() {
 
 function playQuiz() {
     // Have a countdown?
-    var quizButtons = generateQuestionHTML(quizElement)
+    var quizButtons = generateQuestionHTML(quizElement);
     generateAnswerEventListeners(quizButtons);
     displayNextQuestion();
     timer.start();
