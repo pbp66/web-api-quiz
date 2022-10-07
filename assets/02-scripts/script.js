@@ -20,21 +20,30 @@ class Question {
     }
 
     createHTML() {
-        var parent = document.createElement("ul");
-        var properties = Object.keys(this);
+        var quiz = document.createElement("section");
+        var title = document.createElement("h2");
+        var list = document.createElement("ul");
+        var listItem = document.createElement("li");
+        var button = document.createElement("button");
+        var questionProperties = Object.keys(this);
 
-        for (var i = 0; i < 4; i++) { // TODO: Determine number of options for flexible use cases
-            var listElement = document.createElement("li");
-            listElement.className = "answer";
-            listElement.id = properties[i + 1];
-            
-            var button = document.createElement("button")
-            button.innerHTML = this[i + 1];
+        quiz.className = "quiz";
+        quiz.id = "question";
+        title.innerHTML = this.title;
+        title.id = "quiz-title";
 
-            listElement.appendChild(button);
-            parent.appendChild(listElement);
+        quiz.appendChild(title);
+
+        for (var i = 0; i < 4; i++) { // TODO: Generate number of options for flexible use cases instead of hard value
+            listItem.className = "answer";
+            listItem.id = questionProperties[i + 1];
+            button.innerHTML = this["option" + (i + 1)];
+            listItem.appendChild(button);
+            list.appendChild(listItem);
         }
-        this.html = parent;
+        
+        quiz.appendChild(list);
+        this.html = quiz;
     }
 };
 
