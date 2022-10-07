@@ -107,6 +107,18 @@ async function loadScores() {
     }
 }
 
+function saveQuestions() {
+    
+}
+
+function saveSettings() {
+
+}
+
+function saveScores() {
+
+}
+
 function randomizeList(list) {
     var temp;
     for (var i = 0; i < list.length; i++) {
