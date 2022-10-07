@@ -60,6 +60,16 @@ class Settings {
         this.quizTime = time;
         this.timePenalty = penalty;
         this.numQuestions = questionCount;
+        this.loadSettings();
+    }
+
+    async loadSettings() {
+        var settingsData = await fetch("./assets/04-data/settings.json").then(response => response.json());
+        Object.assign(this, settingsData);
+    }
+
+    saveSettings() {
+
     }
 };
 
@@ -85,17 +95,12 @@ async function loadQuestions() {
     var questions = Object.keys(questionData);
     for (var i = 0; i < questions.length; i++ ) {
         var temp = new Question();
-        temp = Object.assign(temp, questionData[questions[i]]);
+        Object.assign(temp, questionData[questions[i]]);
         temp.randomizeOptions();
         questionList.push(temp);
     }
     randomizeList(questionList);
 };
-
-async function loadSettings() {
-    var settingsData = await fetch("./assets/04-data/settings.json").then(response => response.json());
-    Object.assign(settings, settingsData);
-}
 
 async function loadScores() {
     var scoresData = await fetch("./assets/04-data/scores.json").then(response => response.json());
@@ -107,15 +112,11 @@ async function loadScores() {
     }
 }
 
-function saveQuestions() {
-    
-}
-
-function saveSettings() {
+function saveQuestions(questions) {
 
 }
 
-function saveScores() {
+function saveScores(scores) {
 
 }
 
@@ -136,7 +137,6 @@ function randomInt(range) {
 
 async function initQuiz() {
    
-    await loadSettings();
     await loadScores();
     await loadQuestions();
     
@@ -168,12 +168,13 @@ function displayNextQuestion() {
 
 function playQuiz() {
     // Have a countdown?
-    generateEventListeners();
+    var quizButtons = generateQuestionHTML(quizElement)
+    generateAnswerEventListeners(quizButtons);
     displayNextQuestion();
     timer.start();
 }
 
-function generateEventListeners() {
+function generateAnswerEventListeners(quizButtons) {
     for (var i = 0; i < quizButtons.length; i++) {
         quizButtons[i].addEventListener("click", submitAnswer);
     }
