@@ -130,8 +130,6 @@ async function initQuiz() {
     // Terrible practice as this has no modularity if the HTML changes, but it'll do for now.
     timer.setElement(document.querySelector("#timer"));
     timer.getElement().innerHTML = timer.timeLeft;
-
-    generateEventListeners();
 }
 
 function displayQuestion(question) {
@@ -147,9 +145,14 @@ function displayQuestion(question) {
     }
 }
 
+function displayNextQuestion() {
+    displayQuestion(questionList[0]);
+}
+
 function playQuiz() {
     // Have a countdown?
-    displayQuestion(questionList[0]);
+    generateEventListeners();
+    displayNextQuestion();
     timer.start();
 }
 
