@@ -23,10 +23,8 @@ class Question {
         var quiz = document.createElement("section");
         var title = document.createElement("h2");
         var list = document.createElement("ul");
-        var listItem = document.createElement("li");
-        var button = document.createElement("button");
         var questionProperties = Object.keys(this);
-
+        console.log(questionProperties);
         quiz.className = "quiz";
         quiz.id = "question";
         title.innerHTML = this.title;
@@ -35,15 +33,23 @@ class Question {
         quiz.appendChild(title);
 
         for (var i = 0; i < 4; i++) { // TODO: Generate number of options for flexible use cases instead of hard value
+            var listItem = document.createElement("li");
+            var button = document.createElement("button");
+
             listItem.className = "answer";
             listItem.id = questionProperties[i + 1];
-            button.innerHTML = this["option" + (i + 1)];
+            button.textContent = this["option" + (i + 1)];
             listItem.appendChild(button);
             list.appendChild(listItem);
         }
-        
+
         quiz.appendChild(list);
         this.html = quiz;
+        console.log(quiz);
+    }
+
+    displayQuestion(containerElement) {
+        containerElement.innerHTML = this.html;
     }
 };
 
@@ -119,6 +125,7 @@ async function loadQuestions() {
     for (var i = 0; i < questions.length; i++ ) {
         var temp = new Question();
         Object.assign(temp, questionData[questions[i]]);
+        temp.createHTML();
         temp.randomizeOptions();
         questionList.push(temp);
     }
@@ -172,28 +179,10 @@ async function initQuiz() {
     timer.getElement().innerHTML = timer.timeLeft;
 }
 
-function displayQuestion(question) {
-    var quizSection = document.getElementById("question");
-    var title = quizSection.getElementsByTagName("h2")[0];
-    var options = quizSection.getElementsByClassName("answer");
-    var listItem;
-
-    title.textContent = question.title;
-    for (var i = 0; i < options.length; i++) {
-        listItem = options[i].querySelector("button");
-        listItem.innerHTML = question["option_" + (i + 1) + ""];
-    }
-}
-
-function displayNextQuestion() {
-    displayQuestion(questionList[0]);
-}
-
 function playQuiz() {
     // Have a countdown?
-    var quizButtons = generateQuestionHTML(quizElement);
-    generateAnswerEventListeners(quizButtons);
-    displayNextQuestion();
+    var quizContainer = document.getElementById("quiz-container");
+    questionList[0].displayQuestion(quizContainer);
     timer.start();
 }
 
