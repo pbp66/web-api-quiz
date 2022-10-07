@@ -24,7 +24,7 @@ class Question {
         var title = document.createElement("h2");
         var list = document.createElement("ul");
         var questionProperties = Object.keys(this);
-        console.log(questionProperties);
+
         quiz.className = "quiz";
         quiz.id = "question";
         title.innerHTML = this.title;
@@ -38,14 +38,13 @@ class Question {
 
             listItem.className = "answer";
             listItem.id = questionProperties[i + 1];
-            button.textContent = this["option" + (i + 1)];
+            button.innerHTML = this[questionProperties[i + 1]];
             listItem.appendChild(button);
             list.appendChild(listItem);
         }
 
         quiz.appendChild(list);
         this.html = quiz;
-        console.log(quiz);
     }
 
     displayQuestion(containerElement) {
@@ -120,16 +119,20 @@ var quizContainer = document.getElementById("quiz-container");
 
 /* Function declarations */
 async function loadQuestions() {
-    var questionData = await fetch("./assets/04-data/questions.json").then(response => response.json());
-    var questions = Object.keys(questionData);
-    for (var i = 0; i < questions.length; i++ ) {
-        var temp = new Question();
-        Object.assign(temp, questionData[questions[i]]);
-        temp.createHTML();
-        temp.randomizeOptions();
-        questionList.push(temp);
-    }
-    randomizeList(questionList);
+    var questions = [];
+    await fetch("./assets/04-data/questions.json")
+        .then(response => response.json())
+        .then(questionData => {
+            questions = Object.keys(questionData);
+            for (var i = 0; i < questions.length; i++ ) {
+                var temp = new Question();
+                Object.assign(temp, questionData[questions[i]]);
+                temp.randomizeOptions();
+                temp.createHTML();
+                questionList.push(temp);
+            }
+            randomizeList(questionList);
+        });
 };
 
 async function loadScores() {
@@ -212,18 +215,6 @@ var startQuiz = document.getElementById("btn-quiz-start");
 startQuiz.addEventListener("click", playQuiz);
 
 
-
-
-
-
-
-
-
-
-
-/* DEV TEST SECTION */
-var test = document.querySelector("#answer-1");
-test.addEventListener("click", loadScores);
 
 var test3 = function() {
     console.log("Hello, World!");
