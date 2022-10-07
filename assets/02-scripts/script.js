@@ -17,6 +17,11 @@ class Question {
         this.option_3 = options[2];
         this.option_4 = options[3];
     }
+
+    generateQuestionHTML(quizElement) {
+        quizElement.innerHTML = "";
+        quizElement.appendChild(document.createElement('section'))
+    }
 };
 
 class Timer {
@@ -72,7 +77,7 @@ var settings = new Settings();
 var scoresList = [];
 var timer = new Timer();
 var quizButtons = document.getElementsByClassName("answer");
-
+var quizContainer = document.getElementById("quiz-container");
 
 /* Function declarations */
 async function loadQuestions() {
