@@ -48,7 +48,8 @@ class Question {
     }
 
     displayQuestion(containerElement) {
-        containerElement.innerHTML = this.html;
+        containerElement.innerHTML = "";
+        containerElement.appendChild(this.html);
     }
 };
 
