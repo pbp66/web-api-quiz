@@ -50,6 +50,19 @@ class Question {
     displayQuestion(containerElement) {
         containerElement.innerHTML = "";
         containerElement.appendChild(this.html);
+        this.createEventListeners();
+    }
+
+    createEventListeners() {
+        var options;
+        options = this.html.getElementsByClassName("answer");
+        for (var i = 0; i < options.length; i++) { // TODO: Generate number of options for flexible use cases instead of hard value
+            options[i].addEventListener("click", this.submitAnswer);
+        }
+    }
+
+    submitAnswer(event) {
+        console.log(event.target)
     }
 };
 
@@ -188,16 +201,6 @@ function playQuiz() {
     var quizContainer = document.getElementById("quiz-container");
     questionList[0].displayQuestion(quizContainer);
     timer.start();
-}
-
-function generateAnswerEventListeners(quizButtons) {
-    for (var i = 0; i < quizButtons.length; i++) {
-        quizButtons[i].addEventListener("click", submitAnswer);
-    }
-}
-
-function submitAnswer(event) {
-    
 }
 
 /* ROAD MAP */
