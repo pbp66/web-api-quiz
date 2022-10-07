@@ -48,21 +48,25 @@ class Question {
     }
 
     displayQuestion(containerElement) {
+        this.createEventListeners();
         containerElement.innerHTML = "";
         containerElement.appendChild(this.html);
-        this.createEventListeners();
     }
 
     createEventListeners() {
         var options;
         options = this.html.getElementsByClassName("answer");
         for (var i = 0; i < options.length; i++) { // TODO: Generate number of options for flexible use cases instead of hard value
-            options[i].addEventListener("click", this.submitAnswer);
+            options[i].addEventListener("click", (event) => this.submitAnswer(event));
         }
     }
 
     submitAnswer(event) {
-        console.log(event.target)
+        if (event.target.innerText === this.answer) {
+            console.log("Correct!");
+        } else {
+            console.log("Incorrect.");
+        }
     }
 };
 
@@ -200,6 +204,7 @@ function playQuiz() {
     // Have a countdown?
     var quizContainer = document.getElementById("quiz-container");
     questionList[0].displayQuestion(quizContainer);
+    console.log(questionList[0].answer);
     timer.start();
 }
 
