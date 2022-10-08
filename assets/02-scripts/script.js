@@ -232,7 +232,6 @@ function* nextQuestion(list) {
             return questionsRemaining;
         }
         questionsRemaining--;
-        console.log("Question " + (i + 1) + ":");
         yield list[i];
     }
     return questionsRemaining;
@@ -247,7 +246,8 @@ function playQuiz() {
 }
 
 function endQuiz() {
-
+    // Goto high score page when quiz ends. 
+    // Reset HTML on index.html page. Just load the original html page?
 }
 
 /* ROAD MAP */
