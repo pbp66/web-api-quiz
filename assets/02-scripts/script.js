@@ -1,4 +1,6 @@
 /* Class Declarations */
+
+// TODO: Create Quiz Class to handle questions
 class Question {
     constructor(title = "", option1 = "", option2 = "", option3 = "", option4 = "", answer = "") {
         this.title = title;
@@ -9,6 +11,8 @@ class Question {
         this.answer = answer;
         this.html;
     }
+
+    static abortQuiz = new AbortController();
 
     randomizeOptions () {
         var options = [this.option1, this.option2, this.option3, this.option4];
@@ -29,6 +33,7 @@ class Question {
         quiz.id = "question";
         title.innerHTML = this.title;
         title.id = "quiz-title";
+        list.id = "quiz-answers";
 
         quiz.appendChild(title);
 
@@ -47,26 +52,36 @@ class Question {
         this.html = quiz;
     }
 
-    displayQuestion(containerElement) {
-        this.createEventListeners();
+    createEventListener(containerElement, questionIt) {
+        if (timer.timeLeft <= 0) {
+            Question.abortQuiz.abort();
+            endQuiz();
+        }
+        var quiz = this.html.querySelector("#quiz-answers");
+        quiz.addEventListener("click", (event) => {
+            console.log(event);
+            // Update HTML to show correct or incorrect
+            timer.update(-1 * settings.timePenalty);
+            Question.displayQuestion(containerElement, questionIt)
+        }, 
+        { once: true, signal: Question.abortQuiz.signal });
+    }
+
+    static displayQuestion(containerElement, questionIt) {
+        if (timer.timeLeft <= 0) {
+            Question.abortQuiz.abort();
+            endQuiz();
+        }
         containerElement.innerHTML = "";
-        containerElement.appendChild(this.html);
-    }
-
-    createEventListeners() {
-        var options;
-        options = this.html.getElementsByClassName("answer");
-        for (var i = 0; i < options.length; i++) { // TODO: Generate number of options for flexible use cases instead of hard value
-            options[i].addEventListener("click", (event) => this.submitAnswer(event));
+        var nextQuestion = questionIt.next();
+        if (nextQuestion.done) {
+            console.log("Quiz Finished");
+            exitQuiz();
+            return;
         }
-    }
-
-    submitAnswer(event) {
-        if (event.target.innerText === this.answer) {
-            console.log("Correct!");
-        } else {
-            console.log("Incorrect.");
-        }
+        var question = nextQuestion.value;
+        containerElement.appendChild(question.html);
+        question.createEventListener(containerElement, questionIt);
     }
 };
 
@@ -200,17 +215,43 @@ async function initQuiz() {
     timer.getElement().innerHTML = timer.timeLeft;
 }
 
-function playQuiz() {
+function* nextQuestion(list) {
+    var questionsRemaining = list.length;
+    for (var i = 0; i < list.length; i++) {
+        if (timer.timeLeft <= 0) {
+            Question.abortQuiz.abort();
+            endQuiz();
+            return questionsRemaining;
+        }
+        questionsRemaining--;
+        console.log("Question " + (i + 1) + ":");
+        console.log(list[i]);
+        yield list[i];
+    }
+    return questionsRemaining;
+}
+
+async function playQuiz() {
     // Have a countdown?
     var quizContainer = document.getElementById("quiz-container");
-    questionList[0].displayQuestion(quizContainer);
-    console.log(questionList[0].answer);
+    const questions = nextQuestion(questionList);
     timer.start();
+    Question.displayQuestion(quizContainer, questions);
+}
+
+function endQuiz() {
+
 }
 
 /* ROAD MAP */
-// User answers question
-// Update timer if wrong, continue countdown otherwise
+
+// Handling the Display of Questions
+// playQuiz() calls displayQuestion
+// displayQuestion displays the next question
+// Generate the event listener for the question
+// submitAnswer calls displayQuestion again once an answer is clicked
+//
+
 // Move to next question
 // Display correct or incorrect below options on next question
 // When number of questions is finished or time runs out, display score
