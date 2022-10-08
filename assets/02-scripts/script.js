@@ -12,7 +12,7 @@ class Question {
         this.html;
     }
 
-    static abortQuiz = new AbortController();
+    static abortQuiz = new AbortController(); // TODO: Move this to the quiz class
 
     randomizeOptions () {
         var options = [this.option1, this.option2, this.option3, this.option4];
@@ -58,10 +58,18 @@ class Question {
             endQuiz();
         }
         var quiz = this.html.querySelector("#quiz-answers");
+        var question = this;
         quiz.addEventListener("click", (event) => {
-            console.log(event);
-            // Update HTML to show correct or incorrect
-            timer.update(-1 * settings.timePenalty);
+            if (event.target.innerText === question.answer) {
+                // Update score
+                // Display correct on bottom
+                console.log("Correct");
+            } else {
+                // Update score
+                // Display incorrect on bottom
+                console.log("Incorrect");
+                timer.update(-1 * settings.timePenalty);
+            }
             Question.displayQuestion(containerElement, questionIt)
         }, 
         { once: true, signal: Question.abortQuiz.signal });
@@ -225,13 +233,12 @@ function* nextQuestion(list) {
         }
         questionsRemaining--;
         console.log("Question " + (i + 1) + ":");
-        console.log(list[i]);
         yield list[i];
     }
     return questionsRemaining;
 }
 
-async function playQuiz() {
+function playQuiz() {
     // Have a countdown?
     var quizContainer = document.getElementById("quiz-container");
     const questions = nextQuestion(questionList);
@@ -244,15 +251,6 @@ function endQuiz() {
 }
 
 /* ROAD MAP */
-
-// Handling the Display of Questions
-// playQuiz() calls displayQuestion
-// displayQuestion displays the next question
-// Generate the event listener for the question
-// submitAnswer calls displayQuestion again once an answer is clicked
-//
-
-// Move to next question
 // Display correct or incorrect below options on next question
 // When number of questions is finished or time runs out, display score
 
