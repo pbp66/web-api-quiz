@@ -84,6 +84,7 @@ class Question {
         var nextQuestion = questionIt.next();
         if (nextQuestion.done) {
             console.log("Quiz Finished");
+            timer.stop();
             exitQuiz();
             return;
         }
