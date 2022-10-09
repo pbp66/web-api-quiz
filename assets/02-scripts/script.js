@@ -142,18 +142,15 @@ class Settings {
 
     saveSettings() {
         // Save to local storage
-        var properties = Object.keys(this);
-        for (var i = 0; i < properties.length; i++) {
-            localStorage.setItem(properties[i], this[properties[i]]);
-        }
+        localStorage.setItem("settings", JSON.stringify(this));
     }
 };
 
 class Score {
-    constructor(initials = "", score = "", entry = "") {
+    constructor(initials = "", score = "") {
         this.initials = initials;
         this.score = score;
-        this.entry = entry;
+        this.entry = "" + initials + " - " + score;
     }
 }
 
@@ -193,6 +190,7 @@ async function loadScores() {
         temp = Object.assign(temp, scoresData[scores[i]]);
         scoresList.push(temp);
     }
+    saveScores(scoresList);
 }
 
 function saveQuestions(questions) {
@@ -201,6 +199,7 @@ function saveQuestions(questions) {
 
 function saveScores(scores) {
     // Save to local storage
+    localStorage.setItem("scores", JSON.stringify(scores));
 }
 
 function randomizeList(list) {
@@ -257,6 +256,8 @@ function playQuiz() {
 function endQuiz() {
     // Goto high score page when quiz ends. 
     // Reset HTML on index.html page. Just load the original html page?
+    saveQuestions(questionList);
+    saveScores(scoresList);
 }
 
 /* ROAD MAP */
