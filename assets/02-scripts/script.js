@@ -134,12 +134,18 @@ class Settings {
     }
 
     async loadSettings() {
+        // CHeck for local storage first
         var settingsData = await fetch("./assets/04-data/settings.json").then(response => response.json());
         Object.assign(this, settingsData);
+        this.saveSettings();
     }
 
     saveSettings() {
-
+        // Save to local storage
+        var properties = Object.keys(this);
+        for (var i = 0; i < properties.length; i++) {
+            localStorage.setItem(properties[i], this[properties[i]]);
+        }
     }
 };
 
@@ -161,6 +167,7 @@ var quizContainer = document.getElementById("quiz-container");
 
 /* Function declarations */
 async function loadQuestions() {
+    // CHeck for local storage first
     var questions = [];
     await fetch("./assets/04-data/questions.json")
         .then(response => response.json())
@@ -178,6 +185,7 @@ async function loadQuestions() {
 };
 
 async function loadScores() {
+    // CHeck for local storage first
     var scoresData = await fetch("./assets/04-data/scores.json").then(response => response.json());
     var scores= Object.keys(scoresData);
     for (var i = 0; i < scores.length; i++ ) {
@@ -188,11 +196,11 @@ async function loadScores() {
 }
 
 function saveQuestions(questions) {
-
+    // Save to local storage
 }
 
 function saveScores(scores) {
-
+    // Save to local storage
 }
 
 function randomizeList(list) {
