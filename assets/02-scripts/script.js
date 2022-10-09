@@ -195,6 +195,7 @@ async function loadScores() {
 
 function saveQuestions(questions) {
     // Save to local storage
+    localStorage.setItem("questions", JSON.stringify(questions));
 }
 
 function saveScores(scores) {
