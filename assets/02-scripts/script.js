@@ -14,7 +14,7 @@ class Question {
 
     static abortQuiz = new AbortController(); // TODO: Move this to the quiz class
 
-    randomizeOptions () {
+    randomizeOptions() {
         var options = [this.option1, this.option2, this.option3, this.option4];
         randomizeList(options);
         this.option1 = options[0];
@@ -183,8 +183,6 @@ async function loadQuestions() {
             for (var i = 0; i < questions.length; i++ ) {
                 var temp = new Question();
                 Object.assign(temp, questionData[questions[i]]);
-                temp.randomizeOptions();
-                temp.createHTML();
                 questionList.push(temp);
             }
         });
@@ -192,8 +190,12 @@ async function loadQuestions() {
         questionList = JSON.parse(questions);
     }
 
+    for (var i = 0; i < questionList.length; i++) {
+        questionList[i] = Object.assign(new Question(), questionList[i]);
+        questionList[i].randomizeOptions();
+        questionList[i].createHTML();
+    }
     randomizeList(questionList);
-
 };
 
 async function loadScores() {
