@@ -69,7 +69,7 @@ class Question {
         quiz.addEventListener("click", (event) => {
             if (event.target.innerText === question.answer) {
                 // Update score
-                response.innerText = "Correct";
+                response.innerText = "Correct"; // Move to display Question?
                 console.log("Correct");
             } else {
                 // Update score
