@@ -167,7 +167,7 @@ class Score {
 var questionList = [];
 var settings = new Settings();
 var scoresList = [];
-var timer = new Timer();
+var timer = new Timer(60);
 var quizButtons = document.getElementsByClassName("answer");
 var quizContainer = document.getElementById("quiz-container");
 
@@ -244,7 +244,6 @@ async function initQuiz() {
     
     timer.initialTime = settings.quizTime;
     timer.timeLeft = settings.quizTime;
-    timer.interval = settings.timePenalty;
 
     // Terrible practice as this has no modularity if the HTML changes, but it'll do for now.
     timer.setElement(document.querySelector("#timer"));
@@ -274,7 +273,9 @@ function playQuiz() {
 }
 
 function endQuiz() {
-    // Goto high score page when quiz ends. 
+    // When number of questions is finished or time runs out, display score.
+    // Add score entry then, goto high score page. Add score to scoresList
+    // Add button to take quiz again. 
     // Reset HTML on index.html page. Just load the original html page?
     saveQuestions(questionList);
     saveScores(scoresList);
@@ -284,14 +285,10 @@ function endQuiz() {
 // Display correct or incorrect below options on next question
 // When number of questions is finished or time runs out, display score
 
-// Implement methods to save settings and scores. 
-
 initQuiz();
 
 var startQuiz = document.getElementById("btn-quiz-start");
 startQuiz.addEventListener("click", playQuiz);
-
-
 
 var test3 = function() {
     console.log("Hello, World!");
