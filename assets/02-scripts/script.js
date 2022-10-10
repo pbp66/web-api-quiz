@@ -134,14 +134,19 @@ class Settings {
     }
 
     async loadSettings() {
-        // CHeck for local storage first
-        var settingsData = await fetch("./assets/04-data/settings.json").then(response => response.json());
+        var settingsData = localStorage.getItem("settings");
+        if (settingsData === null) {
+            settingsData = await fetch("./assets/04-data/settings.json")
+                .then(response => response.json());
+        } else {
+            settingsData = JSON.parse(settingsData);
+        }
+        
         Object.assign(this, settingsData);
         this.saveSettings();
     }
 
     saveSettings() {
-        // Save to local storage
         localStorage.setItem("settings", JSON.stringify(this));
     }
 };
@@ -166,8 +171,8 @@ var quizContainer = document.getElementById("quiz-container");
 async function loadQuestions() {
     // CHeck for local storage first
     var questions = localStorage.getItem("questions");
-    if (questions === null) {
-    await fetch("./assets/04-data/questions.json")
+    if (questions === null) { // If local storage does not exist, load defaults. 
+        await fetch("./assets/04-data/questions.json")
         .then(response => response.json())
         .then(questionData => {
             questions = Object.keys(questionData);
@@ -182,14 +187,14 @@ async function loadQuestions() {
     } else {
         questionList = JSON.parse(questions);
     }
-    
+
     randomizeList(questionList);
 
 };
 
 async function loadScores() {
     var scoresData = localStorage.getItem("scores");
-    if (scoresData === null) {
+    if (scoresData === null) { // If local storage does not exist, load defaults. 
         scoresData = await fetch("./assets/04-data/scores.json").then(response => response.json());
         var scores= Object.keys(scoresData);
         for (var i = 0; i < scores.length; i++ ) {
@@ -204,12 +209,10 @@ async function loadScores() {
 }
 
 function saveQuestions(questions) {
-    // Save to local storage
     localStorage.setItem("questions", JSON.stringify(questions));
 }
 
 function saveScores(scores) {
-    // Save to local storage
     localStorage.setItem("scores", JSON.stringify(scores));
 }
 
