@@ -50,7 +50,9 @@ header::before, header::after {
 
 
 main {
-    display: block;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
     flex: 1;
     padding: 5px;
     margin: var(--default-vertical-margin) var(--default-horizontal-margin);
@@ -59,6 +61,7 @@ main {
 
 article {
     margin: 5px;
+    display: flex;
 }
 
 .quiz {
@@ -69,32 +72,56 @@ article {
     justify-content: center;
 }
 
-#quiz-start {
-    /* visibility: visible; */
-    
+#quiz-start {  
     display: flex;
     flex-flow: column;
     justify-content: center;
     align-items: center;
 }
 
+#quiz-start h3 {
+    width: 75%;
+    margin: var(--default-horizontal-margin);
+}
+
 #quiz-start h2, #quiz-start input {
-    margin-top: 10px;
+    margin: 10px;
     padding: 5px;
 }
 
 #quiz-start input {
-    margin-bottom: 15px;
+    margin: 15px;
 }
+
 section {
     margin: 5px;
 }
 
 footer {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
+    height: var(--footer-height);
+}
+
+footer h3 {
+    flex: 1;
+    margin: 0px var(--default-horizontal-margin);
+}
+
+#settings {
+    text-align: left;
+    padding-left: var(--default-horizontal-margin);
+}
+
+#copyright {
+    text-align: center;
+}
+
+#questions {
+    text-align: right;
+    padding-right: var(--default-vertical-margin);
 }
 
 /* Developer Styles */
@@ -108,18 +135,4 @@ header {
 
 main {
     border: var(--dev-border-style);
-}
-
-article {
-    border: var(--dev-border-style);
-}
-
-section {
-    border: var(--dev-border-style);
-}
-
-footer {
-    border: var(--dev-border-style);
-    margin: 0px;
-    height: var(--footer-height);
 }

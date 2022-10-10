@@ -76,19 +76,23 @@ class Question {
     }
 
     static displayQuestion(containerElement, questionIt) {
+        var question;
+        var nextQuestion;
         if (timer.timeLeft <= 0) {
             Question.abortQuiz.abort();
             endQuiz();
         }
+        
         containerElement.innerHTML = "";
-        var nextQuestion = questionIt.next();
+        nextQuestion = questionIt.next();
         if (nextQuestion.done) {
             console.log("Quiz Finished");
             timer.stop();
             exitQuiz();
             return;
         }
-        var question = nextQuestion.value;
+
+        question = nextQuestion.value;
         containerElement.appendChild(question.html);
         question.createEventListener(containerElement, questionIt);
     }
