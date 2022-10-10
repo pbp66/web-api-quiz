@@ -27,6 +27,7 @@ class Question {
         var quiz = document.createElement("section");
         var title = document.createElement("h2");
         var list = document.createElement("ul");
+
         var questionProperties = Object.keys(this);
 
         quiz.className = "quiz";
@@ -57,16 +58,22 @@ class Question {
             Question.abortQuiz.abort();
             endQuiz();
         }
+
+        var response = document.createElement("section");
         var quiz = this.html.querySelector("#quiz-answers");
         var question = this;
+
+        response.className = "response";
+        containerElement.appendChild(response);
+
         quiz.addEventListener("click", (event) => {
             if (event.target.innerText === question.answer) {
                 // Update score
-                // Display correct on bottom
+                response.innerText = "Correct";
                 console.log("Correct");
             } else {
                 // Update score
-                // Display incorrect on bottom
+                response.innerText = "Incorrect";
                 console.log("Incorrect");
                 timer.update(-1 * settings.timePenalty);
             }

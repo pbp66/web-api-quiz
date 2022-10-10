@@ -83,7 +83,6 @@ footer h3 {
     align-items: flex-start;
     justify-content: center;
     border: var(--dev-border-style);
-    width: 100%;
 }
 
 .answer {
@@ -98,6 +97,7 @@ footer h3 {
 #quiz-container {
     margin: 5px;
     display: flex;
+    flex-flow: column;
     justify-content: center;
     flex: 1;
 }
