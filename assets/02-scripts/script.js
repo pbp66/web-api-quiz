@@ -165,7 +165,8 @@ var quizContainer = document.getElementById("quiz-container");
 /* Function declarations */
 async function loadQuestions() {
     // CHeck for local storage first
-    var questions = [];
+    var questions = localStorage.getItem("questions");
+    if (questions === null) {
     await fetch("./assets/04-data/questions.json")
         .then(response => response.json())
         .then(questionData => {
@@ -177,18 +178,27 @@ async function loadQuestions() {
                 temp.createHTML();
                 questionList.push(temp);
             }
-            randomizeList(questionList);
         });
+    } else {
+        questionList = JSON.parse(questions);
+    }
+    
+    randomizeList(questionList);
+
 };
 
 async function loadScores() {
-    // CHeck for local storage first
-    var scoresData = await fetch("./assets/04-data/scores.json").then(response => response.json());
-    var scores= Object.keys(scoresData);
-    for (var i = 0; i < scores.length; i++ ) {
-        var temp = new Score();
-        temp = Object.assign(temp, scoresData[scores[i]]);
-        scoresList.push(temp);
+    var scoresData = localStorage.getItem("scores");
+    if (scoresData === null) {
+        scoresData = await fetch("./assets/04-data/scores.json").then(response => response.json());
+        var scores= Object.keys(scoresData);
+        for (var i = 0; i < scores.length; i++ ) {
+            var temp = new Score();
+            temp = Object.assign(temp, scoresData[scores[i]]);
+            scoresList.push(temp);
+        }
+    } else {
+        scoresList = JSON.parse(scoresData);
     }
     saveScores(scoresList);
 }
@@ -265,7 +275,6 @@ function endQuiz() {
 // Display correct or incorrect below options on next question
 // When number of questions is finished or time runs out, display score
 
-// Update loading methods to save to local storage (settings and scores)
 // Implement methods to save settings and scores. 
 
 initQuiz();

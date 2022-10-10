@@ -1,5 +1,5 @@
 {
-    "quizTime": 600,
-    "timePenalty": 1,
-    "numQuestions" : 5
+    "quizTime": 60,
+    "timePenalty": 10,
+    "numQuestions" : 10
 }
