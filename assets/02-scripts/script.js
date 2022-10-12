@@ -13,14 +13,13 @@ class Quiz {
     score;
 
     constructor() {
+        // TODO: Terrible practice as this has no modularity if the HTML changes, but it'll do for now.
         this.quizContainer = document.getElementById("quiz-container"); // Pass through constructor?
 
         this.#questionIt = this.nextQuestion();
         this.#controller = new AbortController();
-
-        this.init();
     }
-    
+
     async init() {
         await this.loadScores();
         await this.loadQuestions();
@@ -33,16 +32,16 @@ class Quiz {
         this.settings.questionCount = this.questionList.length;
         this.questionsRemaining = this.questionList.length;
     
-        // Terrible practice as this has no modularity if the HTML changes, but it'll do for now.
+        // TODO: Terrible practice as this has no modularity if the HTML changes, but it'll do for now.
         this.timer.setElement(document.querySelector("#timer"));
     }
     
-    play() {
-        // Wait for this.init()? How?
-        console.log(this.settings);
-        console.log(this.timer);
-        this.timer.start();
-        this.displayQuestion();
+    async play() {
+        await this.init();
+        
+        // TODO: Terrible practice as this has no modularity if the HTML changes, but it'll do for now.
+        var startQuiz = document.getElementById("btn-quiz-start");
+        startQuiz.addEventListener("click", this.start.bind(this));
     }
 
     end() {
@@ -54,11 +53,17 @@ class Quiz {
         this.saveScores();
     }
 
+    start() {
+        this.timer.start();
+        this.displayQuestion();
+    }
+
     #abortQuiz() {
         this.#controller.abort();
     }
 
     displayQuestion() {
+        // TODO: Display correct or incorrect below options on next question. See createQuestionListener to potentially store the userAnswer
         var currentQuestion = {};
         var nextQuestion = this.#questionIt.next();
         this.quizContainer.innerHTML = "";
@@ -68,7 +73,7 @@ class Quiz {
         if (nextQuestion.done) {
             console.log("Quiz Finished");
             this.timer.stop();
-            this.exitQuiz();
+            this.end();
             return;
         }
 
@@ -91,31 +96,30 @@ class Quiz {
     }
 
     createQuestionListener(question) {
-        var _this = this;
-        
-        _this.checkTime();
+        this.checkTime();
 
         // var response = document.createElement("section");
-        // var quiz = this.html.querySelector("#quiz-answers");
+        // TODO: Terrible practice as this has no modularity if the HTML changes, but it'll do for now.
+        var quiz = question.html.querySelector("#quiz-answers");
 
         // response.className = "response";
         // containerElement.appendChild(response);
 
-        quiz.addEventListener("click", (event) => {
+        quiz.addEventListener("click", ((event) => {
             if (event.target.innerText === question.answer) {
                 // Update score
-                _this.currentUserAnswer = "Correct"; // Move to display Question?
+                this.currentUserAnswer = "Correct";
                 console.log("Correct");
             } else {
                 // Update score
-                _this.currentUserAnswer = "Incorrect"; 
+                this.currentUserAnswer = "Incorrect"; 
                 console.log("Incorrect");
-                _this.timer.update(-1 * _this.settings.timePenalty);
+                this.timer.update(-1 * this.settings.timePenalty);
             }
-            _this.userAnswerList.push(_this.currentUserAnswer);
-            _this.displayQuestion();
-        }, 
-        { once: true, signal: _this.#controller.signal }); // add .bind(this) to access the quiz object?
+            this.userAnswerList.push(this.currentUserAnswer); // TODO: Is this useful?
+            this.displayQuestion();
+        }).bind(this), 
+        { once: true, signal: this.#controller.signal });
     }
 
     async loadQuestions() {
@@ -177,7 +181,7 @@ class Quiz {
     checkTime() {
         if (this.timer.timeLeft <= 0) {
             this.#abortQuiz();
-            this.endQuiz();
+            this.end();
         }
         return;
     }
@@ -252,12 +256,10 @@ class Timer {
         return this.element;
     }
 
-    start() {
-        var timerObj = this;
-        // Try .bind(this) at the end of the method rather than passing scope
+    start() {  
         this.#timer = setInterval(
-            () => timerObj.update(-1), 
-            timerObj.interval * 1000); 
+            (() => this.update(-1)).bind(this), 
+            this.interval * 1000); 
     }
     
     update(changeTime = -1) {
@@ -330,6 +332,4 @@ function randomInt(range) {
 // TODO: When number of questions is finished or time runs out, display score
 
 var quiz = new Quiz();
-
-var startQuiz = document.getElementById("btn-quiz-start");
-startQuiz.addEventListener("click", quiz.play);
+quiz.play();
