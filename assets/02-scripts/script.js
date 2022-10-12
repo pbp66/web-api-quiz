@@ -1,7 +1,190 @@
 /* Class Declarations */
+class Quiz {  
+    #controller;
+    #questionIt;
+    
+    currentUserAnswer;
+    userAnswerList = [];
+    questionList = [];
+    scoresList = [];
+    questionsRemaining;
+    settings;
+    timer;
+    score;
 
-// TODO: Create Quiz Class to handle questions
+    constructor() {
+        this.quizContainer = document.getElementById("quiz-container"); // Pass through constructor?
+
+        this.#questionIt = this.nextQuestion();
+        this.#controller = new AbortController();
+
+        this.init();
+    }
+    
+    async init() {
+        await this.loadScores();
+        await this.loadQuestions();
+        await this.loadSettings();
+
+        this.timer = new Timer(this.settings.quizTime);
+
+        this.score = this.timer.timeLeft;
+
+        this.settings.questionCount = this.questionList.length;
+        this.questionsRemaining = this.questionList.length;
+    
+        // Terrible practice as this has no modularity if the HTML changes, but it'll do for now.
+        this.timer.setElement(document.querySelector("#timer"));
+    }
+    
+    play() {
+        // Wait for this.init()? How?
+        console.log(this.settings);
+        console.log(this.timer);
+        this.timer.start();
+        this.displayQuestion();
+    }
+
+    end() {
+        // TODO: When number of questions is finished or time runs out, display score.
+        // TODO: Add score entry then, goto high score page. Add score to scoresList
+        // TODO: Add button to take quiz again. 
+        // TODO: Reset HTML on index.html page. Just load the original html page?
+        this.saveQuestions();
+        this.saveScores();
+    }
+
+    #abortQuiz() {
+        this.#controller.abort();
+    }
+
+    displayQuestion() {
+        var currentQuestion = {};
+        var nextQuestion = this.#questionIt.next();
+        this.quizContainer.innerHTML = "";
+
+        this.checkTime();
+
+        if (nextQuestion.done) {
+            console.log("Quiz Finished");
+            this.timer.stop();
+            this.exitQuiz();
+            return;
+        }
+
+        currentQuestion = nextQuestion.value;
+        this.quizContainer.appendChild(currentQuestion.html);
+        this.createQuestionListener(currentQuestion);
+    }
+
+    * nextQuestion() {
+        this.questionsRemaining = this.questionList.length;
+        for (var i = 0; i < this.questionList.length; i++) {
+            if (timer.timeLeft <= 0) {
+                this.abortQuiz();
+                return this.questionsRemaining;
+            }
+            this.questionsRemaining--;
+            yield this.questionList[i];
+        }
+        return this.questionsRemaining;
+    }
+
+    createQuestionListener(question) {
+        var _this = this;
+        
+        _this.checkTime();
+
+        // var response = document.createElement("section");
+        // var quiz = this.html.querySelector("#quiz-answers");
+
+        // response.className = "response";
+        // containerElement.appendChild(response);
+
+        quiz.addEventListener("click", (event) => {
+            if (event.target.innerText === question.answer) {
+                // Update score
+                _this.currentUserAnswer = "Correct"; // Move to display Question?
+                console.log("Correct");
+            } else {
+                // Update score
+                _this.currentUserAnswer = "Incorrect"; 
+                console.log("Incorrect");
+                _this.timer.update(-1 * _this.settings.timePenalty);
+            }
+            _this.userAnswerList.push(_this.currentUserAnswer);
+            _this.displayQuestion();
+        }, 
+        { once: true, signal: _this.#controller.signal }); // add .bind(this) to access the quiz object?
+    }
+
+    async loadQuestions() {
+        var questionsData = localStorage.getItem("questions");
+
+        // If local storage does not exist, load defaults. 
+        if (questionsData === null || questionsData === "undefined") { 
+            questionsData = await fetch("./assets/04-data/questions.json")
+                .then(response => response.json());
+
+        } else {
+            questionsData = JSON.parse(questionsData);
+        }
+
+        var questionKeys = Object.keys(questionsData);
+        for (var i = 0; i < questionKeys.length; i++ ) {
+            var temp = new Question();
+            Object.assign(temp, questionsData[questionKeys[i]]);
+            temp.randomizeOptions();
+            temp.createHTML();
+            this.questionList.push(temp);
+        }
+
+        randomizeList(this.questionList);
+    }
+
+    async loadScores() {
+        var scoresData = localStorage.getItem("scores");
+        
+        // If local storage does not exist, load defaults. 
+        if (scoresData === null || scoresData === "undefined") {
+            scoresData = await fetch("./assets/04-data/scores.json")
+                .then(response => response.json());
+        } else {
+            scoresData = JSON.parse(scoresData);
+        }
+        var scoreKeys = Object.keys(scoresData);
+        for (var i = 0; i < scoreKeys.length; i++ ) {
+            this.scoresList.push(
+                Object.assign(new Score(), scoresData[scoreKeys[i]])
+            );
+        }
+
+        this.saveScores(this.scoresList);
+    }
+
+    async loadSettings() {
+        this.settings = new Settings();
+    }
+
+    saveQuestions() {
+        localStorage.setItem("questions", JSON.stringify(this.questionList));
+    }
+    
+    saveScores() {
+        localStorage.setItem("scores", JSON.stringify(this.scoresList));
+    }
+
+    checkTime() {
+        if (this.timer.timeLeft <= 0) {
+            this.#abortQuiz();
+            this.endQuiz();
+        }
+        return;
+    }
+}
 class Question {
+    html;
+    
     constructor(title = "", option1 = "", option2 = "", option3 = "", option4 = "", answer = "") {
         this.title = title;
         this.option1 = option1;
@@ -9,10 +192,7 @@ class Question {
         this.option3 = option3;
         this.option4 = option4;
         this.answer = answer;
-        this.html;
     }
-
-    static abortQuiz = new AbortController(); // TODO: Move this to the quiz class
 
     randomizeOptions() {
         var options = [this.option1, this.option2, this.option3, this.option4];
@@ -52,68 +232,19 @@ class Question {
         quiz.appendChild(list);
         this.html = quiz;
     }
-
-    createEventListener(containerElement, questionIt) {
-        if (timer.timeLeft <= 0) {
-            Question.abortQuiz.abort();
-            endQuiz();
-        }
-
-        var response = document.createElement("section");
-        var quiz = this.html.querySelector("#quiz-answers");
-        var question = this;
-
-        response.className = "response";
-        containerElement.appendChild(response);
-
-        quiz.addEventListener("click", (event) => {
-            if (event.target.innerText === question.answer) {
-                // Update score
-                response.innerText = "Correct"; // Move to display Question?
-                console.log("Correct");
-            } else {
-                // Update score
-                response.innerText = "Incorrect";
-                console.log("Incorrect");
-                timer.update(-1 * settings.timePenalty);
-            }
-            Question.displayQuestion(containerElement, questionIt)
-        }, 
-        { once: true, signal: Question.abortQuiz.signal });
-    }
-
-    static displayQuestion(containerElement, questionIt) {
-        var question;
-        var nextQuestion;
-        if (timer.timeLeft <= 0) {
-            Question.abortQuiz.abort();
-            endQuiz();
-        }
-        
-        containerElement.innerHTML = "";
-        nextQuestion = questionIt.next();
-        if (nextQuestion.done) {
-            console.log("Quiz Finished");
-            timer.stop();
-            exitQuiz();
-            return;
-        }
-
-        question = nextQuestion.value;
-        containerElement.appendChild(question.html);
-        question.createEventListener(containerElement, questionIt);
-    }
 };
 
 class Timer {
+    #timer;
+
     constructor(time = 60, interval = 1){
         this.initialTime = time;
         this.timeLeft = time;
         this.interval = interval;
-        this.timer;
     }
     
     setElement(element) {
+        element.innerHTML = this.timeLeft;
         this.element = element;
     }
 
@@ -123,7 +254,10 @@ class Timer {
 
     start() {
         var timerObj = this;
-        this.timer = setInterval(() => timerObj.update(-1), timerObj.interval * 1000);
+        // Try .bind(this) at the end of the method rather than passing scope
+        this.#timer = setInterval(
+            () => timerObj.update(-1), 
+            timerObj.interval * 1000); 
     }
     
     update(changeTime = -1) {
@@ -132,7 +266,7 @@ class Timer {
     }
 
     stop() {
-        clearInterval(this.timer);
+        clearInterval(this.#timer);
     }
 };
 
@@ -146,6 +280,8 @@ class Settings {
 
     async loadSettings() {
         var settingsData = localStorage.getItem("settings");
+
+        // If local storage does not exist, load defaults. 
         if (settingsData === null) {
             settingsData = await fetch("./assets/04-data/settings.json")
                 .then(response => response.json());
@@ -170,65 +306,9 @@ class Score {
     }
 }
 
-/* Variable Declarations */
-var questionList = [];
-var settings = new Settings();
-var scoresList = [];
-var timer = new Timer(60);
-var quizButtons = document.getElementsByClassName("answer");
-var quizContainer = document.getElementById("quiz-container");
-
-/* Function declarations */
-async function loadQuestions() {
-    // CHeck for local storage first
-    var questions = localStorage.getItem("questions");
-    if (questions === null) { // If local storage does not exist, load defaults. 
-        await fetch("./assets/04-data/questions.json")
-        .then(response => response.json())
-        .then(questionData => {
-            questions = Object.keys(questionData);
-            for (var i = 0; i < questions.length; i++ ) {
-                var temp = new Question();
-                Object.assign(temp, questionData[questions[i]]);
-                questionList.push(temp);
-            }
-        });
-    } else {
-        questionList = JSON.parse(questions);
-    }
-
-    for (var i = 0; i < questionList.length; i++) {
-        questionList[i] = Object.assign(new Question(), questionList[i]);
-        questionList[i].randomizeOptions();
-        questionList[i].createHTML();
-    }
-    randomizeList(questionList);
-};
-
-async function loadScores() {
-    var scoresData = localStorage.getItem("scores");
-    if (scoresData === null) { // If local storage does not exist, load defaults. 
-        scoresData = await fetch("./assets/04-data/scores.json").then(response => response.json());
-        var scores= Object.keys(scoresData);
-        for (var i = 0; i < scores.length; i++ ) {
-            var temp = new Score();
-            temp = Object.assign(temp, scoresData[scores[i]]);
-            scoresList.push(temp);
-        }
-    } else {
-        scoresList = JSON.parse(scoresData);
-    }
-    saveScores(scoresList);
-}
-
-function saveQuestions(questions) {
-    localStorage.setItem("questions", JSON.stringify(questions));
-}
-
-function saveScores(scores) {
-    localStorage.setItem("scores", JSON.stringify(scores));
-}
-
+/* Global Variable Declarations */
+// None
+/* Global Function Declarations */
 function randomizeList(list) {
     var temp;
     for (var i = 0; i < list.length; i++) {
@@ -244,59 +324,12 @@ function randomInt(range) {
     return Math.floor(Math.random() * range);
 }
 
-async function initQuiz() {
-   
-    await loadScores();
-    await loadQuestions();
-    
-    timer.initialTime = settings.quizTime;
-    timer.timeLeft = settings.quizTime;
-
-    // Terrible practice as this has no modularity if the HTML changes, but it'll do for now.
-    timer.setElement(document.querySelector("#timer"));
-    timer.getElement().innerHTML = timer.timeLeft;
-}
-
-function* nextQuestion(list) {
-    var questionsRemaining = list.length;
-    for (var i = 0; i < list.length; i++) {
-        if (timer.timeLeft <= 0) {
-            Question.abortQuiz.abort();
-            endQuiz();
-            return questionsRemaining;
-        }
-        questionsRemaining--;
-        yield list[i];
-    }
-    return questionsRemaining;
-}
-
-function playQuiz() {
-    // Have a countdown?
-    var quizContainer = document.getElementById("quiz-container");
-    const questions = nextQuestion(questionList);
-    timer.start();
-    Question.displayQuestion(quizContainer, questions);
-}
-
-function endQuiz() {
-    // TODO: When number of questions is finished or time runs out, display score.
-    // TODO: Add score entry then, goto high score page. Add score to scoresList
-    // TODO: Add button to take quiz again. 
-    // TODO: Reset HTML on index.html page. Just load the original html page?
-    saveQuestions(questionList);
-    saveScores(scoresList);
-}
-
+/* Main Code Execution */
 /* ROAD MAP */
 // TODO: Display correct or incorrect below options on next question
 // TODO: When number of questions is finished or time runs out, display score
 
-initQuiz();
+var quiz = new Quiz();
 
 var startQuiz = document.getElementById("btn-quiz-start");
-startQuiz.addEventListener("click", playQuiz);
-
-var test3 = function() {
-    console.log("Hello, World!");
-}
+startQuiz.addEventListener("click", quiz.play);
