@@ -66,20 +66,24 @@ class Question {
         response.className = "response";
         containerElement.appendChild(response);
 
-        quiz.addEventListener("click", (event) => {
-            if (event.target.innerText === question.answer) {
-                // Update score
-                response.innerText = "Correct"; // Move to display Question?
-                console.log("Correct");
-            } else {
-                // Update score
-                response.innerText = "Incorrect";
-                console.log("Incorrect");
-                timer.update(-1 * settings.timePenalty);
-            }
-            Question.displayQuestion(containerElement, questionIt)
-        }, 
-        { once: true, signal: Question.abortQuiz.signal });
+        quiz.addEventListener("click", question.submitAnswer(), { 
+            once: true, 
+            signal: Question.abortQuiz.signal 
+        });
+    }
+
+    submitAnswer(event) {
+        if (event.target.innerText === question.answer) {
+            // Update score
+            response.innerText = "Correct"; // Move to display Question?
+            console.log("Correct");
+        } else {
+            // Update score
+            response.innerText = "Incorrect";
+            console.log("Incorrect");
+            timer.update(-1 * settings.timePenalty);
+        }
+        Question.displayQuestion(containerElement, questionIt)
     }
 
     static displayQuestion(containerElement, questionIt) {
@@ -280,17 +284,17 @@ function playQuiz() {
 }
 
 function endQuiz() {
-    // When number of questions is finished or time runs out, display score.
-    // Add score entry then, goto high score page. Add score to scoresList
-    // Add button to take quiz again. 
-    // Reset HTML on index.html page. Just load the original html page?
+    // TODO: When number of questions is finished or time runs out, display score.
+    // TODO: Add score entry then, goto high score page. Add score to scoresList
+    // TODO: Add button to take quiz again. 
+    // TODO: Reset HTML on index.html page. Just load the original html page?
     saveQuestions(questionList);
     saveScores(scoresList);
 }
 
 /* ROAD MAP */
-// Display correct or incorrect below options on next question
-// When number of questions is finished or time runs out, display score
+// TODO: Display correct or incorrect below options on next question
+// TODO: When number of questions is finished or time runs out, display score
 
 initQuiz();
 
