@@ -213,6 +213,8 @@ class Question {
         var list = document.createElement("ul");
 
         var questionProperties = Object.keys(this);
+        // TODO: Anyway to dynamically generate options? Or is hard-coded the only way?
+        // var questionProperties = [this.option1, this.option2, this.option3, this.option4];
 
         quiz.className = "quiz";
         quiz.id = "question";
