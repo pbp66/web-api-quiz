@@ -66,24 +66,20 @@ class Question {
         response.className = "response";
         containerElement.appendChild(response);
 
-        quiz.addEventListener("click", question.submitAnswer(), { 
-            once: true, 
-            signal: Question.abortQuiz.signal 
-        });
-    }
-
-    submitAnswer(event) {
-        if (event.target.innerText === question.answer) {
-            // Update score
-            response.innerText = "Correct"; // Move to display Question?
-            console.log("Correct");
-        } else {
-            // Update score
-            response.innerText = "Incorrect";
-            console.log("Incorrect");
-            timer.update(-1 * settings.timePenalty);
-        }
-        Question.displayQuestion(containerElement, questionIt)
+        quiz.addEventListener("click", (event) => {
+            if (event.target.innerText === question.answer) {
+                // Update score
+                response.innerText = "Correct"; // Move to display Question?
+                console.log("Correct");
+            } else {
+                // Update score
+                response.innerText = "Incorrect";
+                console.log("Incorrect");
+                timer.update(-1 * settings.timePenalty);
+            }
+            Question.displayQuestion(containerElement, questionIt)
+        }, 
+        { once: true, signal: Question.abortQuiz.signal });
     }
 
     static displayQuestion(containerElement, questionIt) {
