@@ -211,10 +211,7 @@ class Question {
         var quiz = document.createElement("section");
         var title = document.createElement("h2");
         var list = document.createElement("ul");
-
-        var questionProperties = Object.keys(this);
-        // TODO: Anyway to dynamically generate options? Or is hard-coded the only way?
-        // var questionProperties = [this.option1, this.option2, this.option3, this.option4];
+        var questionProperties = [this.option1, this.option2, this.option3, this.option4];
 
         quiz.className = "quiz";
         quiz.id = "question";
@@ -224,13 +221,12 @@ class Question {
 
         quiz.appendChild(title);
 
-        for (var i = 0; i < 4; i++) { // TODO: Generate number of options for flexible use cases instead of hard value
+        for (var i = 0; i < questionProperties.length; i++) {
             var listItem = document.createElement("li");
             var button = document.createElement("button");
-            // TODO FIXME: Bug causing the first listItem to be the title and not an option. Instead, only seeing options 1 through 3. Option 4 didn't make the cut.
             listItem.className = "answer";
-            listItem.id = questionProperties[i + 1];
-            button.innerHTML = this[questionProperties[i + 1]];
+            listItem.id = questionProperties[i];
+            button.innerHTML = this[questionProperties[i]];
             listItem.appendChild(button);
             list.appendChild(listItem);
         }
