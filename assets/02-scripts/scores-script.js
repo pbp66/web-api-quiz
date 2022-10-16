@@ -1,0 +1,1 @@
+// Scores HTML script code
