@@ -211,7 +211,7 @@ class Question {
         var quiz = document.createElement("section");
         var title = document.createElement("h2");
         var list = document.createElement("ul");
-        var questionProperties = [this.option1, this.option2, this.option3, this.option4];
+        var questionProperties = ["option1", "option2", "option3", "option4"];
 
         quiz.className = "quiz";
         quiz.id = "question";
