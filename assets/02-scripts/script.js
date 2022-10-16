@@ -1,8 +1,11 @@
 /* Class Declarations */
-class Quiz {  
+class Quiz {
+    // Private Object Properties
     #controller;
     #questionIt;
+    #timeOut;
     
+    // Object Properties
     currentUserAnswer;
     userAnswerList = [];
     questionList = [];
@@ -12,14 +15,14 @@ class Quiz {
     timer;
     score;
 
+    // Object Constructor
     constructor() {
-        // TODO: Terrible practice as this has no modularity if the HTML changes, but it'll do for now.
-        this.quizContainer = document.getElementById("quiz-container"); // Pass through constructor?
-
+        this.quizContainer = document.getElementById("quiz-container"); 
         this.#questionIt = this.nextQuestion();
         this.#controller = new AbortController();
     }
 
+    // Object Methods
     async init() {
         await this.loadScores();
         await this.loadQuestions();
@@ -31,52 +34,44 @@ class Quiz {
 
         this.settings.questionCount = this.questionList.length;
         this.questionsRemaining = this.questionList.length;
-    
-        // TODO: Terrible practice as this has no modularity if the HTML changes, but it'll do for now.
         this.timer.setElement(document.querySelector("#timer"));
     }
     
     async play() {
         await this.init();
-        
-        // TODO: Terrible practice as this has no modularity if the HTML changes, but it'll do for now.
         var startQuiz = document.getElementById("btn-quiz-start");
         startQuiz.addEventListener("click", this.start.bind(this));
     }
 
     end() {
+        this.#stopTimer();
+        this.saveQuestions();
+        this.saveScores();
+
         // TODO: When number of questions is finished or time runs out, display score.
         // TODO: Add score entry then, goto high score page. Add score to scoresList
         // TODO: Add button to take quiz again. 
         // TODO: Reset HTML on index.html page. Just load the original html page?
-        this.saveQuestions();
-        this.saveScores();
+        window.location.href = "./scores.html";
     }
 
     start() {
-        this.timer.start();
+        this.#startTimer();
         this.displayQuestion();
-    }
-
-    #abortQuiz() {
-        this.#controller.abort();
     }
 
     displayQuestion() {
         // TODO: Display correct or incorrect below options on next question. See createQuestionListener to potentially store the userAnswer
+        this.checkTime();
         var currentQuestion = {};
         var nextQuestion = this.#questionIt.next();
         this.quizContainer.innerHTML = "";
 
-        this.checkTime();
-
         if (nextQuestion.done) {
             console.log("Quiz Finished");
-            this.timer.stop();
             this.end();
             return;
         }
-
         currentQuestion = nextQuestion.value;
         this.quizContainer.appendChild(currentQuestion.html);
         this.createQuestionListener(currentQuestion);
@@ -85,7 +80,7 @@ class Quiz {
     * nextQuestion() {
         this.questionsRemaining = this.questionList.length;
         for (var i = 0; i < this.questionList.length; i++) {
-            if (timer.timeLeft <= 0) {
+            if (this.timer.timeLeft <= 0) {
                 this.abortQuiz();
                 return this.questionsRemaining;
             }
@@ -97,24 +92,15 @@ class Quiz {
 
     createQuestionListener(question) {
         this.checkTime();
-
-        // var response = document.createElement("section");
-        // TODO: Terrible practice as this has no modularity if the HTML changes, but it'll do for now.
         var quiz = question.html.querySelector("#quiz-answers");
-
-        // response.className = "response";
-        // containerElement.appendChild(response);
-
         quiz.addEventListener("click", ((event) => {
             if (event.target.innerText === question.answer) {
                 // Update score
                 this.currentUserAnswer = "Correct";
-                console.log("Correct");
             } else {
                 // Update score
-                this.currentUserAnswer = "Incorrect"; 
-                console.log("Incorrect");
-                this.timer.update(-1 * this.settings.timePenalty);
+                this.currentUserAnswer = "Incorrect";
+                this.#updateTimer();
             }
             this.userAnswerList.push(this.currentUserAnswer); // TODO: Is this useful?
             this.displayQuestion();
@@ -185,7 +171,43 @@ class Quiz {
         }
         return;
     }
+
+    // Private Object Methods
+    #abortQuiz() {
+        this.#controller.abort();
+    }
+    
+    #startTimer() {
+        this.timer.start();
+        this.#startTimeOut();
+    }
+
+    #updateTimer() {
+        this.timer.update(-1 * this.settings.timePenalty);
+        this.#updateTimeOut(this.timer.timeLeft);
+    }
+
+    #stopTimer() {
+        this.timer.stop();
+        this.#stopTimeOut();
+    }
+
+    #startTimeOut() {
+        this.#timeOut = setTimeout(() => 
+            this.end().bind(this), 
+            this.timer.timeLeft * 1000);
+    }
+
+    #updateTimeOut(time) {
+        this.#stopTimeOut();
+        this.#timeOut = setTimeout(() => this.end().bind(this), time * 1000);
+    }
+
+    #stopTimeOut() {
+        clearTimeout(this.#timeOut);
+    }
 }
+
 class Question {
     html;
     
@@ -255,9 +277,9 @@ class Timer {
     }
 
     start() {  
-        this.#timer = setInterval(
-            (() => this.update(-1)).bind(this), 
-            this.interval * 1000); 
+        this.#timer = setInterval((() => 
+            this.update(-1)).bind(this), 
+            this.interval * 1000);
     }
     
     update(changeTime = -1) {
