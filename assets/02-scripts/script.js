@@ -238,6 +238,7 @@ class Question {
 
 class Timer {
     #timer;
+    #timeOut;
 
     constructor(time = 60, interval = 1){
         this.initialTime = time;
@@ -258,6 +259,8 @@ class Timer {
         this.#timer = setInterval(
             (() => this.update(-1)).bind(this), 
             this.interval * 1000); 
+        
+        this.#timeOut = setTimeout();
     }
     
     update(changeTime = -1) {
