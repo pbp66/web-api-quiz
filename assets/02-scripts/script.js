@@ -44,13 +44,15 @@ class Quiz {
     }
 
     end() {
-        this.timer.stop();
+        this.#stopTimer();
+        this.saveQuestions();
+        this.saveScores();
+
         // TODO: When number of questions is finished or time runs out, display score.
         // TODO: Add score entry then, goto high score page. Add score to scoresList
         // TODO: Add button to take quiz again. 
         // TODO: Reset HTML on index.html page. Just load the original html page?
-        this.saveQuestions();
-        this.saveScores();
+        window.location.href = "./scores.html";
     }
 
     start() {
@@ -61,7 +63,6 @@ class Quiz {
     displayQuestion() {
         // TODO: Display correct or incorrect below options on next question. See createQuestionListener to potentially store the userAnswer
         this.checkTime();
-
         var currentQuestion = {};
         var nextQuestion = this.#questionIt.next();
         this.quizContainer.innerHTML = "";
@@ -71,7 +72,6 @@ class Quiz {
             this.end();
             return;
         }
-
         currentQuestion = nextQuestion.value;
         this.quizContainer.appendChild(currentQuestion.html);
         this.createQuestionListener(currentQuestion);
@@ -80,7 +80,7 @@ class Quiz {
     * nextQuestion() {
         this.questionsRemaining = this.questionList.length;
         for (var i = 0; i < this.questionList.length; i++) {
-            if (timer.timeLeft <= 0) {
+            if (this.timer.timeLeft <= 0) {
                 this.abortQuiz();
                 return this.questionsRemaining;
             }
@@ -97,11 +97,9 @@ class Quiz {
             if (event.target.innerText === question.answer) {
                 // Update score
                 this.currentUserAnswer = "Correct";
-                console.log("Correct");
             } else {
                 // Update score
                 this.currentUserAnswer = "Incorrect";
-                console.log("Incorrect");
                 this.#updateTimer();
             }
             this.userAnswerList.push(this.currentUserAnswer); // TODO: Is this useful?
@@ -186,29 +184,30 @@ class Quiz {
 
     #updateTimer() {
         this.timer.update(-1 * this.settings.timePenalty);
-        this.#updateTimeOut();
+        this.#updateTimeOut(this.timer.timeLeft);
     }
 
     #stopTimer() {
         this.timer.stop();
+        this.#stopTimeOut();
     }
 
     #startTimeOut() {
         this.#timeOut = setTimeout(() => 
             this.end().bind(this), 
-            this.timer.interval * 1000);
-    }
-
-    #updateTimeOut() {
-        this.#timeOut = setTimeout(() => 
-            this.end().bind(this), 
             this.timer.timeLeft * 1000);
     }
 
-    #stopTimeOut() {
+    #updateTimeOut(time) {
+        this.#stopTimeOut();
+        this.#timeOut = setTimeout(() => this.end().bind(this), time * 1000);
+    }
 
+    #stopTimeOut() {
+        clearTimeout(this.#timeOut);
     }
 }
+
 class Question {
     html;
     
