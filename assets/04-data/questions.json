@@ -1,0 +1,92 @@
+{
+    "Question 1": 
+        {
+            "title": "Which of the following is not a valid data type in JavaScript?",
+            "option1": "Number",
+            "option2": "String",
+            "option3": "Boolean",
+            "option4": "Void",
+            "answer": "Void"
+        },
+    "Question 2" :
+        {
+            "title": "Which operator is used as a strict equality checking for the same value and type?",
+            "option1": "===",
+            "option2": "!==",
+            "option3": "+++",
+            "option4": "==",
+            "answer": "==="
+        },
+    "Question 3" : 
+        {
+            "title": "What is the difference between null and undefined?",
+            "option1": "null represents a value of 0 and and undefined represents a value that is not assigned",
+            "option2": "null represents the idea of nothing/empty and undefined represents a value that is not assigned",
+            "option3": "null represents the idea of nothing/empty and undefined represents a variable with no type",
+            "option4": "null represents a value of 0 and undefined represents a value that is not assigned",
+            "answer": "null represents the idea of nothing/empty and undefined represents a value that is not assigned"
+        },
+    "Question 4" : 
+        {
+            "title": "Which of the following are not valid loop types in JavaScript?",
+            "option1": "While Loop",
+            "option2": "For Loop",
+            "option3": "Do While Loop",
+            "option4": "Do For Loop",
+            "answer": "Do For Loop"
+        },
+    "Question 5" : 
+        {
+            "title": "Arrays are enclosed with which symbols?",
+            "option1": "Bananas",
+            "option2": "Parenthesis, ()",
+            "option3": "Straight Braces, []",
+            "option4": "Curly Braces, {}",
+            "answer": "Straight Braces, []"
+        },
+    "Question 6" : 
+        {
+            "title": "What is the root html tag in the DOM tree?",
+            "option1": "head",
+            "option2": "html",
+            "option3": "!DOCTYPE html",
+            "option4": "script",
+            "answer": "html"
+        },
+    "Question 7" : 
+        {
+            "title": "Which method can you use to search the DOM tree?",
+            "option1": "querySelector",
+            "option2": "getAttributeById",
+            "option3": "getID",
+            "option4": "getName",
+            "answer": "querySelector"
+        },
+    "Question 8" : 
+        {
+            "title": "Test Question 8?",
+            "option1": "",
+            "option2": "",
+            "option3": "",
+            "option4": "",
+            "answer": ""
+        },
+    "Question 9" : 
+        {
+            "title": "Test Question 9?",
+            "option1": "",
+            "option2": "",
+            "option3": "",
+            "option4": "",
+            "answer": ""
+        },
+    "Question 10" : 
+        {
+            "title": "Test Question 10?",
+            "option1": "",
+            "option2": "",
+            "option3": "",
+            "option4": "",
+            "answer": ""
+        }
+}
