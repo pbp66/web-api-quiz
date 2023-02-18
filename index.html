@@ -1,38 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web API Quiz!</title>
-    <link rel="stylesheet" href="./assets/01-style/reset.css">
-    <link rel="stylesheet" href="./assets/01-style/style.css">
-</head>
-<body>
-    <header>
-        <h3><a href="./scores.html">View high scores</a></h3>
-        <h1>TITLE</h1>
-        <h3>Time Left: <span id="timer">0</span>s</h3>
-    </header>
-    <main>
-        <article id="quiz-container">
-            <section id="quiz-start">
-                <h2>Coding Quiz Challenge</h2>
-                <h3>Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by <span id="time-penalty">10</span> seconds!</h3>
-                <input type="button" value="Click to Start the Quiz!" id="btn-quiz-start">
-            </section>
-        </article>
-    </main>
-    <footer>
-        <h3 id="settings">
-            <a href="./settings.html">Settings</a>
-        </h3>
-        <h3 id="copyright">&copy; James Perry 2022</h3>
-        <h3 id="questions">
-            <a href="./settings.html">Edit Questions</a>
-        </h3>
-    </footer>
-    <!-- <script src="./assets/02-scripts/loading-script.js" async></script> -->
-    <script src="./assets/02-scripts/script.js" async></script>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			http-equiv="X-UA-Compatible"
+			content="IE=edge"
+		/>
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Web API Quiz!</title>
+		<link
+			rel="stylesheet"
+			href="./assets/01-style/reset.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="./assets/01-style/style.css"
+		/>
+	</head>
+	<body>
+		<header>
+			<h3><a href="./scores.html">View high scores</a></h3>
+			<h1>TITLE</h1>
+			<h3>Time Left: <span id="timer">0</span>s</h3>
+		</header>
+		<main>
+			<article id="quiz-container">
+				<section id="quiz-start">
+					<h2>Coding Quiz Challenge</h2>
+					<h3>
+						Try to answer the following code-related questions
+						within the time limit. Keep in mind that incorrect
+						answers will penalize your score/time by
+						<span id="time-penalty">10</span> seconds!
+					</h3>
+					<input
+						type="button"
+						value="Click to Start the Quiz!"
+						id="btn-quiz-start"
+					/>
+				</section>
+			</article>
+		</main>
+		<footer>
+			<h3 id="settings">
+				<a href="./settings.html">Settings</a>
+			</h3>
+			<h3 id="copyright">&copy; James Perry 2022</h3>
+			<h3 id="questions">
+				<a href="./settings.html">Edit Questions</a>
+			</h3>
+		</footer>
+		<script
+			src="./assets/02-scripts/script.js"
+			async
+		></script>
+		<script
+			src="https://code.jquery.com/jquery-3.6.3.slim.min.js"
+			integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo="
+			crossorigin="anonymous"
+		></script>
+	</body>
 </html>
