@@ -92,6 +92,20 @@ const rawQuestionData = JSON.parse(`{
         }
 }`);
 
+const rawScoreData = JSON.parse(`{
+	1: {
+		initials: "JP",
+		score: 0,
+		entry: "JP - 0",
+	},
+}`);
+
+const rawSettingsData = JSON.parse(`{
+    "quizTime": 60,
+    "timePenalty": 10,
+    "numQuestions" : 10
+}`);
+
 /* Class Declarations */
 class Quiz {
 	// Private Object Properties
@@ -232,9 +246,7 @@ class Quiz {
 
 		// If local storage does not exist, load defaults.
 		if (scoresData === null || scoresData === "undefined") {
-			scoresData = await fetch("./assets/04-data/scores.json").then(
-				(response) => response.json()
-			);
+			scoresData = rawScoreData;
 		} else {
 			scoresData = JSON.parse(scoresData);
 		}
@@ -405,9 +417,7 @@ class Settings {
 
 		// If local storage does not exist, load defaults.
 		if (settingsData === null) {
-			settingsData = await fetch("./assets/04-data/settings.json").then(
-				(response) => response.json()
-			);
+			settingsData = rawSettingsData;
 		} else {
 			settingsData = JSON.parse(settingsData);
 		}
